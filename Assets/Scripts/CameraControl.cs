@@ -5,22 +5,19 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour
 {
     public GameObject player; // 플레이어
-    private Animator p_animator;
-    private Transform p_upperChest;
 
     [SerializeField]
     private float mouseSpeed;
     private float mouseX;
     private float mouseY;
 
-    private Vector3 chestDir;
-    private Vector3 chestOffset;
+    private float posY;
+    public float applyCrouchPosY;
+    public float applyWalkPosY;
     private void Start()
     {
-        p_animator = player.GetComponent<Animator>();
-        p_upperChest = p_animator.GetBoneTransform(HumanBodyBones.UpperChest);
+        posY = this.transform.position.y;
     }
-
     void Update()
     {
         mouseX += Input.GetAxis("Mouse X") * mouseSpeed;
@@ -30,10 +27,20 @@ public class CameraControl : MonoBehaviour
         this.transform.eulerAngles = new Vector3(mouseY, mouseX, 0);
         player.transform.eulerAngles = new Vector3(0, mouseX, 0); // 마우스 좌우 = 캐릭터 회전
     }
-    private void LateUpdate()
+    public void Crouch(bool isCrouch) // 앉기 시에 카메라의 시점 조작
     {
-        chestDir = this.transform.position + this.transform.forward * 50f;
-        p_upperChest.LookAt(chestDir);
-        p_upperChest.rotation = p_upperChest.rotation * Quaternion.Euler(0, -90, -90); // 상체 회전 보정
+        if (isCrouch)
+        {
+            posY = Mathf.Lerp(posY, applyCrouchPosY, 0.1f);
+            this.transform.position = new Vector3(this.transform.position.x, posY, this.transform.position.z);
+        }
+        else
+        {
+            if(!Mathf.Approximately(posY, applyWalkPosY))
+            {
+                posY = Mathf.Lerp(posY, applyWalkPosY, 0.1f);
+                this.transform.position = new Vector3(this.transform.position.x, posY, this.transform.position.z);
+            }
+        }
     }
 }
