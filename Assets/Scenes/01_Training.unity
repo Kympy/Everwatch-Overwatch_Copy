@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 318784889}
   - component: {fileID: 318784888}
   - component: {fileID: 318784887}
+  - component: {fileID: 318784891}
   - component: {fileID: 318784890}
   m_Layer: 0
   m_Name: Player
@@ -460,9 +461,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimControl: {fileID: 67401870}
+  m_rigidbody: {fileID: 318784888}
   moveSpeed: 6
   jumpPower: 4
   rayRange: 1.8
+  dir: {x: 0, y: 0, z: 0}
 --- !u!54 &318784888
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -514,6 +517,26 @@ MonoBehaviour:
   reloadingTime: 2
   shootPoint: {fileID: 26313187}
   range: 100
+--- !u!114 &318784891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318784886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99c42758509d1484083bd997506e2abf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 868517664}
+  power: 400
+  desiredDir: {x: 0, y: 0, z: 0}
+  destination: {x: -10.038383, y: 1.898668, z: 2.3356893}
+  speed: 100
+  range: 5
+  num: 0.8
+  cameraHeight: 0.4
 --- !u!1 &509551986 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}

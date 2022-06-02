@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public AimControl aimControl;
     private CameraControl cameraControl; // 이동에 따른 카메라 시점 컨트롤
 
-    private Rigidbody m_rigidbody;
+    public Rigidbody m_rigidbody;
 
     private bool jump; // 점프 실행 중 여부 확인 변수
     private bool isGround; // 땅인지 확인
@@ -20,12 +20,13 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     public float jumpPower;
     public float rayRange; // 점프 레이 쏠 거리
+    public Vector3 dir;
 
     void Start()
     {
         GameManager.Input.KeyAction -= OnKeyboard;
         GameManager.Input.KeyAction += OnKeyboard;
-        m_rigidbody = GetComponent<Rigidbody>();
+        //m_rigidbody = GetComponent<Rigidbody>();
         cameraControl = GetComponentInChildren<CameraControl>();
         jump = false; isRun = false; isCrouch = false; isGround = false;
         rayRange = 1.8f;
@@ -47,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 _moveHorizontal = transform.right * horizontal;
             Vector3 _moveVertical = transform.forward * vertical;
-            Vector3 dir = (_moveHorizontal + _moveVertical).normalized;
+            dir = (_moveHorizontal + _moveVertical).normalized;
             if(!isCrouch) moveSpeed = 6f; // 이동 속도 복구
             transform.position = transform.position + dir * moveSpeed * Time.deltaTime;
         }
@@ -71,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate() // 물리만 fixed에서 처리
     {
+        //CharacterRotation(); 카메라 컨트롤에서 이미 캐릭터 회전 처리
         if (jump)
         {
             aimControl.Jump(); // 점프 시 에임으로 변경
@@ -94,12 +96,13 @@ public class PlayerMovement : MonoBehaviour
         }
         isGround = false; // 레이가 맞은 물체가 땅이 아닐 때
     }
-    /*
+    
     private void CharacterRotation()  // 좌우 캐릭터 회전
     {
+        /*
         float _yRotation = Camera.main.transform.rotation.y;
         Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * cameraControl.mouseSpeed;
-        m_rigidbody.MoveRotation(m_rigidbody.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
-
-    }*/
+        m_rigidbody.MoveRotation(m_rigidbody.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언*/
+        transform.rotation = Quaternion.Euler(dir);
+    }
 }
