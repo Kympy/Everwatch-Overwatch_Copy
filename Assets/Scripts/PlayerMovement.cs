@@ -10,9 +10,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody m_rigidbody;
 
-    private Vector3 movement;
-
-    private bool isJumping; // 점프 실행 중 여부 확인 변수
+    private bool jump; // 점프 실행 중 여부 확인 변수
+    private bool isGround; // 땅인지 확인
     bool isJump;
     bool isRun;
     bool isCrouch;
@@ -20,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     // 이동관련 변수
     public float moveSpeed;
     public float jumpPower;
+    public float rayRange; // 점프 레이 쏠 거리
 
     void Start()
     {
@@ -27,7 +27,8 @@ public class PlayerMovement : MonoBehaviour
         GameManager.Input.KeyAction += OnKeyboard;
         m_rigidbody = GetComponent<Rigidbody>();
         cameraControl = GetComponentInChildren<CameraControl>();
-        isJumping = false; isRun = false; isCrouch = false;
+        jump = false; isRun = false; isCrouch = false; isGround = false;
+        rayRange = 1.8f;
     }
     void OnKeyboard()
     {
@@ -51,13 +52,9 @@ public class PlayerMovement : MonoBehaviour
             transform.position = transform.position + dir * moveSpeed * Time.deltaTime;
         }
         // 점프 관련
-        if (isJump) // 키입력은 update에서 처리
+        if (isJump && isGround) // 키입력 & 땅이면 점프
         {
-            if (isJumping == false)
-            {
-                isJumping = true;
-                isJump = true;
-            }
+            jump = true; // 점프 실행
         }
         // 앉기 관련
         if (isCrouch)
@@ -70,17 +67,32 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         cameraControl.Crouch(false); // 평상 시 카메라 시점 조작
+        CheckGround(); // 땅인지 확인
     }
     private void FixedUpdate() // 물리만 fixed에서 처리
     {
-        if (isJumping)
+        if (jump)
         {
-            aimControl.Jump();
+            aimControl.Jump(); // 점프 시 에임으로 변경
             Debug.Log("Jump");
             m_rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-            isJumping = false;
+            jump = false;
         }
         else aimControl.Idle();
+    }
+    void CheckGround()
+    {
+        RaycastHit hit;
+        //Debug.DrawRay(transform.position, Vector3.down * rayRange, Color.red);
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayRange))
+        {
+            if (hit.transform.tag == "Ground") // 땅이면 isGround true
+            {
+                isGround = true;
+                return;
+            }
+        }
+        isGround = false; // 레이가 맞은 물체가 땅이 아닐 때
     }
     /*
     private void CharacterRotation()  // 좌우 캐릭터 회전
@@ -90,13 +102,4 @@ public class PlayerMovement : MonoBehaviour
         m_rigidbody.MoveRotation(m_rigidbody.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
 
     }*/
-
-    // 바닥에 있는지 체크하는 함수
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            isJumping = false;
-        }
-    }
 }
