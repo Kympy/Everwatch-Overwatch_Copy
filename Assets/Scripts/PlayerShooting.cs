@@ -21,11 +21,11 @@ public class PlayerShooting : MonoBehaviour
     public float range; // 사정거리
     void Start()
     {
+        GameManager.Input.KeyAction -= OnMouse;
+        GameManager.Input.KeyAction += OnMouse;
         currentBullet = maxBullet;
-
     }
-
-    void Update()
+    private void OnMouse()
     {
         if (Input.GetMouseButton(0))
         {
@@ -59,6 +59,7 @@ public class PlayerShooting : MonoBehaviour
     }
     void Reload()
     {
+        Debug.Log("Reloading..");
         timer += Time.deltaTime;
         if(timer >= reloadingTime) // 장전시간을 넘기면 장전
         {
