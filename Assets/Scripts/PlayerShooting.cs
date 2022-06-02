@@ -14,7 +14,6 @@ public class PlayerShooting : MonoBehaviour
     private float fireTime; // 연사 계산을 위한 발사시간
 
     //장전속도
-    private float timer;
     public float reloadingTime;
 
     public Transform shootPoint; // 발사지점
@@ -33,11 +32,11 @@ public class PlayerShooting : MonoBehaviour
             {
                 Fire();
             }
-            else Reload();
+            else StartCoroutine(Reload()); // 총알이 0 이하면 재장전 코루틴 실행
 
-            if (fireTime < fireRate)
+            if (fireTime < fireRate) // 발사시간이 연사속도보다 작으면
             {
-                fireTime += Time.deltaTime;
+                fireTime += Time.deltaTime; // 발사시간 누적
             }
         }
         else aimControl.Idle();
@@ -57,14 +56,11 @@ public class PlayerShooting : MonoBehaviour
             fireTime = 0f;
         }
     }
-    void Reload()
+    IEnumerator Reload() // 코루틴으로 재장전 구현
     {
         Debug.Log("Reloading..");
-        timer += Time.deltaTime;
-        if(timer >= reloadingTime) // 장전시간을 넘기면 장전
-        {
-            currentBullet = maxBullet;
-            timer = 0f;
-        }
+        yield return new WaitForSeconds(reloadingTime); // 재장전 시간만큼 후에 장전
+        currentBullet = maxBullet;
+        Debug.Log("Reload finish");
     }
 }

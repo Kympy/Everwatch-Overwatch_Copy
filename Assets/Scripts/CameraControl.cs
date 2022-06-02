@@ -7,9 +7,10 @@ public class CameraControl : MonoBehaviour
     public GameObject player; // 플레이어
 
     [SerializeField]
-    private float mouseSpeed;
     private float mouseX;
     private float mouseY;
+
+    public float mouseSpeed;
 
     private float posY;
     public float applyCrouchPosY;

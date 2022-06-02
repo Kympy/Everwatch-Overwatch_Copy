@@ -443,7 +443,7 @@ GameObject:
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -631,7 +631,7 @@ GameObject:
   - component: {fileID: 779220343}
   - component: {fileID: 778090423}
   m_Layer: 0
-  m_Name: SciFiPistol_YM-3
+  m_Name: TracerL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -800,7 +800,7 @@ GameObject:
   - component: {fileID: 851212423}
   - component: {fileID: 850213447}
   m_Layer: 0
-  m_Name: SciFiPistol_YM-3 (1)
+  m_Name: TracerR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -939,8 +939,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 318784886}
   mouseSpeed: 6
-  applyCrouchPosY: 1.5
-  applyWalkPosY: 3
+  applyCrouchPosY: 1.2
+  applyWalkPosY: 2.5
 --- !u!4 &868517664
 Transform:
   m_ObjectHideFlags: 0
@@ -949,7 +949,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868517658}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.056122124, y: 0.7355546, z: 0.18652028}
+  m_LocalPosition: {x: 0.056122124, y: 0.33, z: 0.18652028}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 26313187}
@@ -1571,8 +1571,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1816428235}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.013599992, z: 0}
-  m_LocalScale: {x: 1, y: 1.5136, z: 1}
+  m_LocalPosition: {x: 0, y: -0.1398, z: 0}
+  m_LocalScale: {x: 1, y: 1.360215, z: 1}
   m_Children: []
   m_Father: {fileID: 318784889}
   m_RootOrder: 1
