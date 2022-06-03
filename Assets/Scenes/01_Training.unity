@@ -414,7 +414,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136413961}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.3
   m_Height: 1.6
@@ -428,7 +428,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136413961}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.3, z: 0.2}
@@ -457,7 +457,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 298800030}
   m_LocalRotation: {x: -0, y: -0, z: -0.000000022351742, w: 1}
-  m_LocalPosition: {x: -0.009, y: 0.133, z: 0.489}
+  m_LocalPosition: {x: -0.008999998, y: 0.13299996, z: 0.4889999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 776320343}
@@ -549,8 +549,11 @@ MonoBehaviour:
   currentBullet: 0
   maxBullet: 30
   bulletEffect: {fileID: 5478910406276012559, guid: 4424a2ac7ca89194fa8ff2c578e46a6a, type: 3}
+  shootEffect: {fileID: 1391847458487284, guid: 9bf79f2d846a57440a981c168c87c617, type: 3}
   fireRate: 0.1
   reloadingTime: 2
+  shootPoint_L: {fileID: 298800031}
+  shootPoint_R: {fileID: 26313187}
   range: 100
 --- !u!114 &318784891
 MonoBehaviour:
@@ -569,7 +572,7 @@ MonoBehaviour:
   desiredDir: {x: 0, y: 0, z: 0}
   destination: {x: -10.038383, y: 1.898668, z: 2.3356893}
   speed: 100
-  range: 5
+  range: 7
   num: 0.8
   cameraHeight: 0.4
 --- !u!1 &509551986 stripped
@@ -585,7 +588,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509551986}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.3
   m_Height: 1.6
@@ -599,7 +602,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509551986}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.3, z: 0.2}
@@ -1400,7 +1403,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1465455233}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.3, z: 0.2}
@@ -1413,7 +1416,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1465455233}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.3
   m_Height: 1.6

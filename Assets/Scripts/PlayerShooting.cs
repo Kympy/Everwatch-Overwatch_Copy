@@ -6,11 +6,12 @@ public class PlayerShooting : MonoBehaviour
 {
     // 에임 변화 조절 위한 스크립트
     public AimControl aimControl;
-    //public GameObject aim;
+
     // 탄창 수
     public int currentBullet;
     public int maxBullet; // 최대 탄창
     public GameObject bulletEffect;
+    public GameObject shootEffect;
 
     // 연사속도
     public float fireRate;
@@ -19,7 +20,8 @@ public class PlayerShooting : MonoBehaviour
     //장전속도
     public float reloadingTime;
 
-    //public Transform shootPoint; // 발사지점
+    public Transform shootPoint_L; // 발사지점
+    public Transform shootPoint_R; // 발사지점
     public float range; // 사정거리
     void Start()
     {
@@ -64,7 +66,10 @@ public class PlayerShooting : MonoBehaviour
                 new Vector3(Random.Range(-aimControl.accuracy, aimControl.accuracy), Random.Range(-aimControl.accuracy, aimControl.accuracy), 0f),Color.red, 2f);*/
             }
             GameObject effect = Instantiate(bulletEffect, hit.point, Quaternion.LookRotation(hit.normal)); // 총 맞은 위치 표현
-            Destroy(effect, 1f);
+            GameObject effect_L = Instantiate(shootEffect, shootPoint_L);
+            GameObject effect_R = Instantiate(shootEffect, shootPoint_R);
+
+            Destroy(effect_L, 0.1f); Destroy(effect_R, 0.1f);
             currentBullet--;
             fireTime = 0f;
         }
