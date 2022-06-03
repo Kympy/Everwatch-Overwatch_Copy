@@ -50,12 +50,8 @@ public class PlayerMovement : MonoBehaviour
             Vector3 _moveVertical = transform.forward * vertical;
             dir = (_moveHorizontal + _moveVertical).normalized;
             if(!isCrouch) moveSpeed = 6f; // 이동 속도 복구
+            aimControl.Walk();
             transform.position = transform.position + dir * moveSpeed * Time.deltaTime;
-        }
-        // 점프 관련
-        if (isJump && isGround) // 키입력 & 땅이면 점프
-        {
-            jump = true; // 점프 실행
         }
         // 앉기 관련
         if (isCrouch)
@@ -63,6 +59,18 @@ public class PlayerMovement : MonoBehaviour
             isJump = false; // 앉기 중 점프 불가능
             cameraControl.Crouch(true); // 앉을 때 카메라 시점 조작
             moveSpeed = 3f; // 앉기 이동 속도 저하
+            aimControl.Crouch();
+        }
+        if (isCrouch && isRun)
+        {
+            aimControl.accuracy = 0.07f;
+            aimControl.CrouchFire();
+        }
+        // 점프 관련
+        if (isJump && isGround) // 키입력 & 땅이면 점프
+        {
+            jump = true; // 점프 실행
+            aimControl.Jump();
         }
     }
     void Update()
@@ -75,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         //CharacterRotation(); 카메라 컨트롤에서 이미 캐릭터 회전 처리
         if (jump)
         {
+            isCrouch = false; // 점프 중 앉기 불가능
             aimControl.Jump(); // 점프 시 에임으로 변경
             Debug.Log("Jump");
             m_rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
