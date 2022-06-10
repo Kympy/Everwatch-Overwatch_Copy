@@ -19,8 +19,7 @@
         (캐릭터 모델과 애니메이션의 부재로 머리에 카메라를 다는 방식을 대체하였다)
       - 조준점은 기본적으로 1의 Scale값을 가지고 있다. 점프, 사격, 앉기 시 각각의 상황에 따른 Scale값을 0.8~1.5 사이로 조절하여 조준점의 벌어지는 정도를 표현하였다.
       
-    <pre>
-    <code>
+    ```C#
     void Fire()
     {
         aimControl.Fire();
@@ -51,16 +50,13 @@
             currentBullet--; // 총알 감소
             fireTime = 0f;
         }
-    }
-  </code>
-  </pre>
+    }```
   
     - 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
       하여 한 탄창보다 넉넉한 크기만큼 Queue를 할당하였다.
       
       
-<pre>
-<code>
+```C#
 public class ObjectPool : MonoBehaviour
 {
     public static ObjectPool Instance;
@@ -90,9 +86,7 @@ public class ObjectPool : MonoBehaviour
         _object.transform.SetParent(transform);
         return _object;
     }
-  }
-<code>
-<pre>
+  }```
   
   
     - 점멸 / 시간역행
