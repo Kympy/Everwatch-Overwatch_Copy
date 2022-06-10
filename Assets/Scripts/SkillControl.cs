@@ -75,7 +75,7 @@ public class SkillControl : MonoBehaviour
     }
     IEnumerator TimeTravel()
     {
-        canvas.alpha = 1;
+        canvas.alpha = 1; // ¹Ô¹ÔÇØ¼­ È­¸éÀÌ ÆÄ·¡Áö´Â ÀÌÆåÆ®¸¦ »ìÂ¦ ÁÖ¾ú´Ù.
         isSave = false;
         for (int i = originalPosition.Count - 1; i >= 0; i--)
         {
