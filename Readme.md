@@ -53,8 +53,40 @@
     }
   ```
   
-      - 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
-        하여 한 탄창보다 넉넉한 크기만큼 Queue를 할당하였다.
+    - 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
+      하여 한 탄창보다 넉넉한 크기만큼 Queue를 할당하였다.
+``` C#
+public class ObjectPool : MonoBehaviour
+{
+    public static ObjectPool Instance;
+
+    public GameObject _BulletEffect;
+
+    Queue<BulletEffect> poolingObjectQueue = new Queue<BulletEffect>();
+
+    private void Awake()
+    {
+        Instance = this;
+        Initialize(50);
+    }
+
+    private void Initialize(int initCount)
+    {
+        for (int i = 0; i < initCount; i++)
+        {
+            poolingObjectQueue.Enqueue(CreateNewObject());
+        }
+    }
+
+    private BulletEffect CreateNewObject()
+    {
+        var _object = Instantiate(_BulletEffect).GetComponent<BulletEffect>();
+        _object.gameObject.SetActive(false);
+        _object.transform.SetParent(transform);
+        return _object;
+    }
+  }
+  ```
     - 점멸
       
     - 시간역행
