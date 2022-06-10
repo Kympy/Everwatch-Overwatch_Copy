@@ -51,7 +51,6 @@
             fireTime = 0f;
         }
     }```
-  
     - 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
       하여 한 탄창보다 넉넉한 크기만큼 Queue를 할당하였다.
       
@@ -87,8 +86,6 @@ public class ObjectPool : MonoBehaviour
         return _object;
     }
   }```
-  
-  
     - 점멸 / 시간역행
     
     ![Video Label](http://img.youtube.com/vi/KvbRFXK08i4/0.jpg)
