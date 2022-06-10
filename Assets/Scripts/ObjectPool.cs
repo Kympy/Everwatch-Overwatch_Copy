@@ -26,10 +26,10 @@ public class ObjectPool : MonoBehaviour
 
     private BulletEffect CreateNewObject()
     {
-        var newObj = Instantiate(_BulletEffect).GetComponent<BulletEffect>();
-        newObj.gameObject.SetActive(false);
-        newObj.transform.SetParent(transform);
-        return newObj;
+        var _object = Instantiate(_BulletEffect).GetComponent<BulletEffect>();
+        _object.gameObject.SetActive(false);
+        _object.transform.SetParent(transform);
+        return _object;
     }
 
     public static BulletEffect GetObject()

@@ -93,7 +93,7 @@ public class SkillControl : MonoBehaviour
         Vector3 start = Camera.position;
         Vector3 end = Camera.forward;
         // 점멸 방향
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W)) // 각 방향에 따른 독립적인 점멸 구현
         {
             end += Camera.forward;
         }
@@ -110,22 +110,17 @@ public class SkillControl : MonoBehaviour
             end += Camera.right;
         }
         RaycastHit hit;
-        if (Physics.Raycast(start, end, out hit, range))
+        if (Physics.Raycast(start, end, out hit, range)) // 무언가 장애물이 있으면 맞은 위치에 떨어짐
         {
             //Debug.DrawLine(Camera.position, hit.point * num, Color.red,2);
-            // 장애물이 있으면 
-            if (hit.transform.gameObject.name != "Bot")
-            {
-                //Debug.Log("Hit");
-                destination = hit.point * num; // 목적지보다 조금 덜 간다
-            }
+            destination = hit.point * num; // 목적지보다 num이라는 상수(0.8~0.9)배 만큼 덜 간다. 관통 / 버그 방지
         }
-        else // 장애물이 없으면
+        else // 전방에 장애물이 없으면 점멸 사거리만큼 앞으로 도약
         {
             //Debug.Log("no Hit");
             destination = (start + end.normalized * range) * num;
         }
-        destination.y += cameraHeight;
+        destination.y += cameraHeight; // 점멸과정 중 바닥에 파묻히는걸 막기 위해 시점 높이만큼 y축을 조절함
         isBlink = true;
     }
 }
