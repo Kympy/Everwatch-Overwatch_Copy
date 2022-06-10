@@ -55,6 +55,8 @@
   
     - 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
       하여 한 탄창보다 넉넉한 크기만큼 Queue를 할당하였다.
+      
+      
 ``` C#
 public class ObjectPool : MonoBehaviour
 {
@@ -86,8 +88,11 @@ public class ObjectPool : MonoBehaviour
         return _object;
     }
   }
-  ```
-    - 점멸
-      
-    - 시간역행
+```
+  
+  
+    - 점멸 / 시간역행
+    
+    
+    
 ## 3. 한계점
