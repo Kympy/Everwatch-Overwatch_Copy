@@ -3,14 +3,14 @@
 ## 1. 개요
   오버워치의 메인화면을 비슷하게 구현해보고자 하며, 훈련장에서 캐릭터의 스킬들을 모방하며 공부하는 것에 의미를 두었다. 오버워치의 모델과 이미지들은 공개되어 있지 않기에 에셋 스토의 무료 에셋 중에서 분위기가 비슷한 것들을 골라 사용했다. 별도의 이펙트, 사운드 등은 활용하지 않았으며 기능을 구현하는 것만 시도하였다. 
 ## 2. 주요 기능
-  + 메인화면
++ 메인화면
 
     ![Video Label](http://img.youtube.com/vi/Sht9aB_tLRw/0.jpg)
     
     https://youtu.be/Sht9aB_tLRw
     - 메인화면의 모양을 최대한 비슷하게 따라해보았다. 버튼은 마우스 오버 시 확대되는 애니메이션을 간단하게 만들어 사용했고, 뒷 배경 흐림은 유니티 프로가 아니어서 그런지 피사계심도가         적용되지 않아 가로 세로 방향으로 블러를 주는 쉐이더를 사용해서 구현했다.
-  + 트레이서
-    - 이동, 앉기, 점프, 조준, 사격
++ 트레이서
+	- 이동, 앉기, 점프, 조준, 사격
     
       ![Video Label](http://img.youtube.com/vi/es291dzJh8Y/0.jpg)
       
@@ -51,52 +51,92 @@
             fireTime = 0f;
         }
     }
-
-    - 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
+		
+		
+- 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
       하여 한 탄창보다 넉넉한 크기만큼 Queue를 할당하였다.
       
       
-```C#
-public class ObjectPool : MonoBehaviour
-{
-    public static ObjectPool Instance;
+	```C#
+	public class ObjectPool : MonoBehaviour
+	{
+	    public static ObjectPool Instance;
+	
+	    public GameObject _BulletEffect;
 
-    public GameObject _BulletEffect;
+	    Queue<BulletEffect> poolingObjectQueue = new Queue<BulletEffect>();
 
-    Queue<BulletEffect> poolingObjectQueue = new Queue<BulletEffect>();
+	    private void Awake()
+	    {
+	        Instance = this;
+ 	        Initialize(50);
+	    }
 
-    private void Awake()
-    {
-        Instance = this;
-        Initialize(50);
-    }
+	    private void Initialize(int initCount)
+ 	   {
+  	      for (int i = 0; i < initCount; i++)
+   	      {
+          	  poolingObjectQueue.Enqueue(CreateNewObject());
+        	}
+    	}
 
-    private void Initialize(int initCount)
-    {
-        for (int i = 0; i < initCount; i++)
-        {
-            poolingObjectQueue.Enqueue(CreateNewObject());
-        }
-    }
-
-    private BulletEffect CreateNewObject()
-    {
-        var _object = Instantiate(_BulletEffect).GetComponent<BulletEffect>();
-        _object.gameObject.SetActive(false);
-        _object.transform.SetParent(transform);
-        return _object;
-    }
-  }```
-    - 점멸 / 시간역행
+    	private BulletEffect CreateNewObject()
+    	{
+        	var _object = Instantiate(_BulletEffect).GetComponent<BulletEffect>();
+        	_object.gameObject.SetActive(false);
+        	_object.transform.SetParent(transform);
+       	  return _object;
+   	  }
+	}
+- 점멸 / 시간역행
     
     ![Video Label](http://img.youtube.com/vi/KvbRFXK08i4/0.jpg)
     
     https://youtu.be/KvbRFXK08i4
+		
+ - 점멸은 시작 지점에서 Ray를 쏴 전방에 부딪힌 장애물이 있다면 장애물 위치까지만 점멸하고, 장애물이 없다면 기존 점멸 사거리만큼 정상적으로 이동한다. 단, 물체를 관통하거나 바닥에 		박히는 일이 없도록 num이라는 상수를 통해 이동거리를 보정하고, y축은 카메라 시점과 일치시켜 보정한다.
+ 
+	```C#
+    void Blink()
+    {
+        canvas.alpha = 1;
+        Vector3 start = Camera.position;
+        Vector3 end = Camera.forward;
+        // 점멸 방향
+        if (Input.GetKey(KeyCode.W)) // 각 방향에 따른 독립적인 점멸 구현
+        {
+            end += Camera.forward;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            end += -Camera.forward;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            end += -Camera.right;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            end += Camera.right;
+        }
+        RaycastHit hit;
+        if (Physics.Raycast(start, end, out hit, range)) // 무언가 장애물이 있으면 맞은 위치에 떨어짐
+        {
+            //Debug.DrawLine(Camera.position, hit.point * num, Color.red,2);
+            destination = hit.point * num; // 목적지보다 num이라는 상수(0.8~0.9)배 만큼 덜 간다. 관통 / 버그 방지
+        }
+        else // 전방에 장애물이 없으면 점멸 사거리만큼 앞으로 도약
+        {
+            //Debug.Log("no Hit");
+            destination = (start + end.normalized * range) * num;
+        }
+        destination.y += cameraHeight; // 점멸과정 중 바닥에 파묻히는걸 막기 위해 시점 높이만큼 y축을 조절함
+        isBlink = true;
+    }
     
-      - 점멸은 3초동안 60개의 이동 지점을 0.05초 마다 List에 저장한다. 60개 정도의 저장이 위치의 급격한 도약없이 적절하게 저장된다고 판단했고, 60개 정도의 공간이면 List의 자료구         조가 적절할 것이라 생각했다.
-      <pre>
-      <code>
-      void SavePosition(bool start)
+  - 시간 역행을 하기 위해서 3초동안 60개의 이동 지점을 0.05초 마다 List에 저장한다. 60개 정도의 저장이 위치의 급격한 도약없이 적절하게 저장된다고 판단했고, 60개 정도의 공간이면 		 List의 자료구조가 적절할 것이라 생각했다.
+    ```C#  
+    void SavePosition(bool start)
     {
         if (start)
         {
@@ -120,7 +160,23 @@ public class ObjectPool : MonoBehaviour
         }
         else return;
     }
-    </code>
-    </pre>
-    
+- 저장된 위치는 3초마다 갱신되며, 저장된 위치를 다시 되돌아가는 방식으로 시간역행을 할 수 있었다. 처음에는 현 위치에서 배열의 역순으로 MoveTowards 해주는 방식으로 이동을 실시했으나 움직임이 다소 부자연스럽게 느껴졌다. 따라서 Lerp를 사용하여 위치와 위치를 보간하여 좀 더 부드럽게 이동할 수 있었다.
+
+	```C#
+	  IEnumerator TimeTravel()
+    {
+        canvas.alpha = 1; // 밋밋해서 화면이 파래지는 이펙트를 살짝 주었다.
+        isSave = false;
+        for (int i = originalPosition.Count - 1; i >= 0; i--)
+        {
+            //transform.position = Vector3.MoveTowards(transform.position, (Vector3)originalPosition[i], Time.deltaTime * speed * 2);
+            transform.position = Vector3.Lerp(transform.position, (Vector3)originalPosition[i], 0.2f);
+            //Debug.Log(originalPosition[i]);
+            yield return new WaitForSeconds(0.01f); // 총 1.5 초가 걸려서 돌아온다.
+        }
+        isSave = true;
+        canvas.alpha = 0;
+    }
+		
+
 ## 3. 한계점
