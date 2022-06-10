@@ -10,6 +10,7 @@ public class SkillControl : MonoBehaviour
     public Vector3 desiredDir;
     public Vector3 destination;
     public ArrayList originalPosition;
+    public CanvasGroup canvas;
 
     public float speed;
     public float range;
@@ -43,6 +44,7 @@ public class SkillControl : MonoBehaviour
             if (distance > 0.2f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * speed);
+                canvas.alpha = 0;
             }
             else isBlink = false;
         }
@@ -73,17 +75,21 @@ public class SkillControl : MonoBehaviour
     }
     IEnumerator TimeTravel()
     {
+        canvas.alpha = 1;
         isSave = false;
         for (int i = originalPosition.Count - 1; i >= 0; i--)
         {
-            transform.position = Vector3.MoveTowards(transform.position, (Vector3)originalPosition[i], Time.deltaTime * speed * 2);
+            //transform.position = Vector3.MoveTowards(transform.position, (Vector3)originalPosition[i], Time.deltaTime * speed * 2);
+            transform.position = Vector3.Lerp(transform.position, (Vector3)originalPosition[i], 0.2f);
             //Debug.Log(originalPosition[i]);
             yield return new WaitForSeconds(0.01f); // 총 1.5 초가 걸려서 돌아온다.
         }
         isSave = true;
+        canvas.alpha = 0;
     }
     void Blink()
     {
+        canvas.alpha = 1;
         Vector3 start = Camera.position;
         Vector3 end = Camera.forward;
         // 점멸 방향

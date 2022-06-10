@@ -49,7 +49,6 @@ public class PlayerShooting : MonoBehaviour
             aimControl.Idle();
         }
     }
-    
     void Fire()
     {
         aimControl.Fire();
@@ -61,11 +60,18 @@ public class PlayerShooting : MonoBehaviour
                 new Vector3(Random.Range(-aimControl.accuracy, aimControl.accuracy), Random.Range(-aimControl.accuracy, aimControl.accuracy),0f),
                 out hit, range))
             {
-                //Debug.Log(Random.Range(-aimControl.accuracy, aimControl.accuracy));
-                /*Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward +
-                new Vector3(Random.Range(-aimControl.accuracy, aimControl.accuracy), Random.Range(-aimControl.accuracy, aimControl.accuracy), 0f),Color.red, 2f);*/
+                if(hit.transform.tag == "Head")
+                {
+                    BotControl bot = hit.transform.gameObject.GetComponent<BotControl>();
+                    bot.Damaged(10);
+                }
+                else if(hit.transform.gameObject.tag == "Bot")
+                {
+                    BotControl bot = hit.transform.gameObject.GetComponent<BotControl>();
+                    bot.Damaged(5);
+                }
             }
-            GameObject effect = Instantiate(bulletEffect, hit.point, Quaternion.LookRotation(hit.normal)); // 총 맞은 위치 표현
+            Instantiate(bulletEffect, hit.point * 1.001f, Quaternion.LookRotation(hit.normal)); // 총 맞은 위치 표현
             GameObject effect_L = Instantiate(shootEffect, shootPoint_L);
             GameObject effect_R = Instantiate(shootEffect, shootPoint_R);
 

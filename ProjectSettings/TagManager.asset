@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - Bot
+  - Bullet
+  - Head
   layers:
   - Default
   - TransparentFX
