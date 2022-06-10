@@ -72,7 +72,7 @@
  	        Initialize(50);
 	    }
 
-	    private void Initialize(int initCount)
+	    private void Initialize(int initCount) // 시작 시 initCount만큼 큐의 크기 할당
  	   {
   	      for (int i = 0; i < initCount; i++)
    	      {
@@ -80,13 +80,13 @@
         	}
     	}
 
-    	private BulletEffect CreateNewObject()
+    	private BulletEffect CreateNewObject() // 탄흔 오브젝트를 생성해두고 비활성화
     	{
         	var _object = Instantiate(_BulletEffect).GetComponent<BulletEffect>();
         	_object.gameObject.SetActive(false);
         	_object.transform.SetParent(transform);
        	  return _object;
-   	  }
+   	  } // 이후에 필요시 요청받아 풀에서 꺼내쓰고 다시 리턴하는 형식, 이하 코드 생략
 	}
 - 점멸 / 시간역행
     
