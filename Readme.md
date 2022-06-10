@@ -19,7 +19,8 @@
         (캐릭터 모델과 애니메이션의 부재로 머리에 카메라를 다는 방식을 대체하였다)
       - 조준점은 기본적으로 1의 Scale값을 가지고 있다. 점프, 사격, 앉기 시 각각의 상황에 따른 Scale값을 0.8~1.5 사이로 조절하여 조준점의 벌어지는 정도를 표현하였다.
       
-    ``` C#
+    <pre>
+    <code>
     void Fire()
     {
         aimControl.Fire();
@@ -51,13 +52,15 @@
             fireTime = 0f;
         }
     }
-  ```
+  </code>
+  </pre>
   
     - 발사 방식은 히트스캔 방식으로 구현하였으며 레이를 쏘아 맞은 지점에 탄흔 오브젝트를 생성하고 부착하였다. 탄흔 오브젝트의 경우 자주 생성, 삭제를 반복하므로 오브젝트 풀링을 사용
       하여 한 탄창보다 넉넉한 크기만큼 Queue를 할당하였다.
       
       
-``` C#
+<pre>
+<code>
 public class ObjectPool : MonoBehaviour
 {
     public static ObjectPool Instance;
@@ -88,11 +91,44 @@ public class ObjectPool : MonoBehaviour
         return _object;
     }
   }
-```
+<code>
+<pre>
   
   
     - 점멸 / 시간역행
     
+    ![Video Label](http://img.youtube.com/vi/KvbRFXK08i4/0.jpg)
     
+    https://youtu.be/KvbRFXK08i4
+    
+      - 점멸은 3초동안 60개의 이동 지점을 0.05초 마다 List에 저장한다. 60개 정도의 저장이 위치의 급격한 도약없이 적절하게 저장된다고 판단했고, 60개 정도의 공간이면 List의 자료구         조가 적절할 것이라 생각했다.
+      <pre>
+      <code>
+      void SavePosition(bool start)
+    {
+        if (start)
+        {
+            timer += Time.deltaTime;
+            if (timer >= 0.05f)
+            {
+                if (originalPosition.Count < 60) // 3초 전까지 저장
+                {
+                    originalPosition.Add(transform.position);
+                    //Debug.Log(originalPosition.Count);
+
+                }
+                else
+                {
+                    originalPosition.RemoveAt(0); // 최대 이상으로 저장되면 첫번째 요소부터 지운다. 자동으로 인덱스 당겨짐
+                    originalPosition.Add(transform.position);
+                    //Debug.Log(originalPosition.Count);
+                }
+                timer = 0f;
+            }
+        }
+        else return;
+    }
+    </code>
+    </pre>
     
 ## 3. 한계점
