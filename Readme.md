@@ -4,7 +4,8 @@
   오버워치의 메인화면을 비슷하게 구현해보고자 하며, 훈련장에서 캐릭터의 스킬들을 모방하며 공부하는 것에 의미를 두었다. 오버워치의 모델과 이미지들은 공개되어 있지 않기에 에셋 스토의 무료 에셋 중에서 분위기가 비슷한 것들을 골라 사용했다. 별도의 이펙트, 사운드 등은 활용하지 않았으며 기능을 구현하는 것만 시도하였다. 
 ## 2. 주요 기능
   + 메인화면
-    [![Video Label](http://img.youtube.com/vi/Sht9aB_tLRw/0.jpg)]
+    ![Video Label](http://img.youtube.com/vi/Sht9aB_tLRw/0.jpg)
+    https://youtu.be/Sht9aB_tLRw
   + 트레이서
     - 점멸
       
