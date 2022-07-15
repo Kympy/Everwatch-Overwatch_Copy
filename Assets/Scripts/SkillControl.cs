@@ -4,25 +4,23 @@ using UnityEngine;
 
 public class SkillControl : MonoBehaviour
 {
-    //private Rigidbody m_rigidbody;
-    public Transform Camera;
-    public float power;
-    public Vector3 desiredDir;
-    public Vector3 destination;
-    public ArrayList originalPosition;
-    public CanvasGroup canvas;
+    public Transform Camera; // 카메라 위치
+    public float power; // 점멸 파워
+    public Vector3 desiredDir; // 목적지 방향
+    public Vector3 destination; // 목적지
+    public ArrayList originalPosition; // 기존 위치
+    public CanvasGroup canvas; // 간단하게 준 이펙트
 
-    public float speed;
-    public float range;
-    public float num;
-    public float cameraHeight;
-    private float timer;
+    public float speed; // 속도
+    public float range; // 점멸 사거리
+    public float num; // 상수
+    public float cameraHeight; // 카메라 고도
+    private float timer; // 시간역행 타이머
 
-    private bool isBlink;
-    private bool isSave;
+    private bool isBlink; // 점멸 여부
+    private bool isSave; // 위치 저장 활성화 여부
     void Start()
     {
-        //m_rigidbody = GetComponent<Rigidbody>();
         isBlink = false; isSave = true; timer = 0f;
         originalPosition = new ArrayList();
     }

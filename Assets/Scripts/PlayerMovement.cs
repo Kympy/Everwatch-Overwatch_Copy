@@ -12,9 +12,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool jump; // 점프 실행 중 여부 확인 변수
     private bool isGround; // 땅인지 확인
-    bool isJump;
-    bool isRun;
-    bool isCrouch;
+    private bool isJump; // 점프 최초 실행
+    private bool isRun; // 이동
+    private bool isCrouch; // 앉기
 
     // 이동관련 변수
     public float moveSpeed;

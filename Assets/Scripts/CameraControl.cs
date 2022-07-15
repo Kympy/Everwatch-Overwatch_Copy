@@ -10,11 +10,11 @@ public class CameraControl : MonoBehaviour
     private float mouseX;
     private float mouseY;
 
-    public float mouseSpeed;
+    public float mouseSpeed; // 마우스 감도
 
     private float posY;
-    public float applyCrouchPosY;
-    public float applyWalkPosY;
+    public float applyCrouchPosY; // 앉은 카메라 위치
+    public float applyWalkPosY; // 기본 카메라 위치
     private void Start()
     {
         posY = this.transform.position.y;
@@ -30,7 +30,7 @@ public class CameraControl : MonoBehaviour
     }
     public void Crouch(bool isCrouch) // 앉기 시에 카메라의 시점 조작
     {
-        if (isCrouch)
+        if (isCrouch) // 앉을 때
         {
             posY = Mathf.Lerp(posY, applyCrouchPosY, 0.1f);
             this.transform.position = new Vector3(this.transform.position.x, posY, this.transform.position.z);
